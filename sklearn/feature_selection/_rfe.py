@@ -624,8 +624,13 @@ class RFECV(RFE):
         self.ranking_ = rfe.ranking_
         self.estimator_ = clone(self.estimator)
         self.estimator_.fit(self.transform(X), y)
+        self.selected_features_ = X.columns[self.support_]
+        self.eliminated_features = X.columns[self.support_ is False]
 
         # Fixing a normalization error, n is equal to get_n_splits(X, y) - 1
         # here, the scores are normalized by get_n_splits(X, y)
         self.grid_scores_ = scores[::-1] / cv.get_n_splits(X, y, groups)
         return self
+    
+    
+    
